@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdexcept>
+#include<cstdlib>
 
 class dynamic_array
 {

@@ -33,34 +33,85 @@ dynamic_array_implementation::dynamic_array_implementation()
 }
 int dynamic_array_implementation::get_size()
 {
-    return 0;
+    return size;
 }
 int dynamic_array_implementation::get_capacity()
 {
-    return 0;
+    return capacity;
 }
 
 void dynamic_array_implementation::set_increase_factor_table_size(double increase_factor)
 {
+	this->increase_factor = increase_factor;
     return;
 }
 void dynamic_array_implementation::set_load_factor_reduction(double decrease_factor)
 {
+	this->decrease_factor = decrease_factor;
     return;
 }
 
 void dynamic_array_implementation::append(int element)
 {
+	if(capacity == size)
+	{
+		if(capacity == 0)
+		{
+			capacity = 1;
+			arr = (int*)malloc(sizeof(int)*capacity);
+		}
+		else
+		{
+			capacity = capacity * increase_factor;
+			
+		}
+		int *temp = (int*)malloc(sizeof(int)*capacity);
+		for(int i=0; i<size; i++)
+		{
+			temp[i] = arr[i];
+		}
+		free(arr);
+		arr = temp;	
+	}
+	arr[size++] = element;
     return;
 }
 
 void dynamic_array_implementation::pop()
 {
+	if(capacity*decrease_factor == size)
+	{
+		if(size == 0 )
+		{
+			cout<<"No elements to pop.\n";
+		}
+		else
+		{
+			capacity = capacity * (1/increase_factor);
+		}
+		int *temp = (int*)malloc(sizeof(int)*capacity);
+		for(int i=0; i<size; i++)
+		{
+			temp[i] = arr[i];
+		}
+		free(arr);
+		arr = temp;
+	}
+	size--;
+	if(size == 0)
+	{
+		capacity = 0;
+	}
     return;
 }
 int dynamic_array_implementation::get(int index)
 {
-    return 0;
+	if(index >= size || index < 0)
+	{
+		cout<<"Out of bound";
+		return 0;
+	}
+    return arr[index];
 }
 
 dynamic_array_implementation::~dynamic_array_implementation()
