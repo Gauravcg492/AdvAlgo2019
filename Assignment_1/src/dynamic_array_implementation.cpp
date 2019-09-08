@@ -87,7 +87,7 @@ void dynamic_array_implementation::pop()
 		}
 		else
 		{
-			capacity = capacity * (1/increase_factor);
+			capacity = capacity * (increase_factor * decrease_factor);
 		}
 		int *temp = (int*)malloc(sizeof(int)*capacity);
 		for(int i=0; i<size; i++)
