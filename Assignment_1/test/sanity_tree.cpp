@@ -26,3 +26,16 @@ TEST_CASE("Remove") {
     test_splay_tree.remove(1);
     CHECK(test_splay_tree.get_num_nodes() == 0);
 }
+
+TEST_CASE("Mycase") {
+    splay_tree_implementation test_splay_tree;
+    for(int i = 0;i<5;i++)
+    {
+    	test_splay_tree.insert(i+10);
+    }    
+    CHECK(test_splay_tree.get_num_nodes() == 5);
+    test_splay_tree.insert(0);
+    CHECK(test_splay_tree.get_num_nodes() == 6);
+    test_splay_tree.remove(0);
+    CHECK(test_splay_tree.get_num_nodes() == 5);
+}

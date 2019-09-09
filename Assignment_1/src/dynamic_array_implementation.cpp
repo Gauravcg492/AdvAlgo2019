@@ -28,8 +28,8 @@ dynamic_array_implementation::dynamic_array_implementation()
 {
     size = 0;
     capacity = 0;
-    increase_factor = 2;
-    decrease_factor = 0.25;
+    increase_factor = 1.5;
+    decrease_factor = 0.333;
 }
 int dynamic_array_implementation::get_size()
 {
@@ -70,7 +70,6 @@ void dynamic_array_implementation::append(int element)
 		{
 			temp[i] = arr[i];
 		}
-		free(arr);
 		arr = temp;	
 	}
 	arr[size++] = element;
@@ -94,7 +93,6 @@ void dynamic_array_implementation::pop()
 		{
 			temp[i] = arr[i];
 		}
-		free(arr);
 		arr = temp;
 	}
 	size--;
