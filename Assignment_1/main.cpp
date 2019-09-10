@@ -33,13 +33,13 @@ using namespace std;
 int main()
 {
 	dynamic_array_implementation array;
-	//array.set_increase_factor_table_size(1.5);
-	//array.set_load_factor_reduction(0.333);
+	array.set_increase_factor_table_size(4);
+	array.set_load_factor_reduction(0.1);
 	int c;
 	struct timespec start,end;
 	srand(time(0));
 	clock_gettime(CLOCK_REALTIME,&start);
-	for(int i=0;i<100000;i++)
+	for(int i=0;i<1000000;i++)
 	{
 		c = rand()%2;
 		if(c==0)

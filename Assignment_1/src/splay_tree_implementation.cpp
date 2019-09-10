@@ -52,8 +52,6 @@ class node
 		
 		~node()
 		{
-			delete left;
-			delete right;
 			num_nodes--;
 		}
 };
@@ -78,9 +76,9 @@ class splay_tree_implementation : public splay_tree
 		void insert(int);
 		node* bst_remove(node*,int);		
 		void remove(int);
-		void rec_post(node*,vector<int>);
+		void rec_post(node*,vector<int>&);
 		vector<int> post_order();
-		void rec_pre(node*,vector<int>);
+		void rec_pre(node*,vector<int>&);
 		vector<int> pre_order();
 		~splay_tree_implementation();
 };
@@ -88,12 +86,12 @@ class splay_tree_implementation : public splay_tree
 
 splay_tree_implementation :: splay_tree_implementation()
 {
-	root = NULL;
+	this->root = NULL;
 }
 
 int splay_tree_implementation :: get_num_nodes()
 {
-	return (root == NULL)? 0 : (root)->num_nodes;
+	return (this->root == NULL)? 0 : (this->root)->num_nodes;
 }
 
 node* splay_tree_implementation :: zig(node *p)
@@ -132,7 +130,7 @@ node* splay_tree_implementation :: splay(node *root,int ele)
 			temp = splay(root->get_left()->get_right(),ele);
 			root->get_left()->set_right(temp);
 			
-			if(root->get_left()->get_right() != NULL) root = zag(root->get_right()); //zag for p and x
+			if(root->get_left()->get_right() != NULL) root->set_left(zag(root->get_left())); //zag for p and x
 		}
 		
 		return (root->get_left() == NULL)? root : zig(root); 	
@@ -153,7 +151,7 @@ node* splay_tree_implementation :: splay(node *root,int ele)
 			temp = splay(root->get_right()->get_left(),ele);
 			root->get_right()->set_left(temp);
 			
-			if(root->get_right()->get_left() != NULL) root = zig(root->get_right()); //Zig for p and x
+			if(root->get_right()->get_left() != NULL) root->set_right(zig(root->get_right())); //Zig for p and x
 		}		 
 		return (root->get_right() == NULL)? root : zag(root);
 	}
@@ -162,8 +160,8 @@ node* splay_tree_implementation :: splay(node *root,int ele)
 
 int splay_tree_implementation :: find(int ele)
 {
-	root = splay(root,ele);
-	if((root)->get_key() == ele) return 1;
+	this->root = splay(root,ele);
+	if((this->root)->get_key() == ele) return 1;
 	else return 0;
 }
 
@@ -189,7 +187,7 @@ node* splay_tree_implementation :: bst_insert(node *root,int ele)
 
 void splay_tree_implementation :: insert(int ele)
 {	
-	root = bst_insert(root,ele);
+	this->root = bst_insert(root,ele);
 	find(ele);	
 	return;
 }
@@ -211,7 +209,7 @@ node* splay_tree_implementation :: bst_remove(node *root,int ele)
 	if(curr == NULL)
 	{
 		if(prev != NULL) find(prev->get_key());
-		return root;
+		return prev;
 	}
 	
 	// check for subtress
@@ -251,23 +249,26 @@ node* splay_tree_implementation :: bst_remove(node *root,int ele)
 		}
 		curr->set_key(temp->get_key());
 		delete temp;
+		if(prev == NULL)
+		{
+			return curr;
+		}
 	}
 	
 	if(prev != NULL)
 	{
 		find(prev->get_key());
 	}
-	
-	return root;
+	return prev;
 }
 
 void splay_tree_implementation :: remove(int ele)
 {
-	root = bst_remove(root,ele);
+	this->root = bst_remove(root,ele);
 	return;
 }
 
-void splay_tree_implementation :: rec_post(node *root,vector<int> vect)
+void splay_tree_implementation :: rec_post(node *root,vector<int> &vect)
 {
 	if(root != NULL)
 	{		
@@ -284,7 +285,7 @@ vector<int> splay_tree_implementation :: post_order()
 	return vect;
 }
 
-void splay_tree_implementation :: rec_pre(node *root,vector<int> vect)
+void splay_tree_implementation :: rec_pre(node *root,vector<int> &vect)
 {
 	if(root != NULL)
 	{

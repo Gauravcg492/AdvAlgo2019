@@ -1,6 +1,7 @@
 #include "../src/splay_tree_implementation.cpp"
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest.h"
+#include<iostream>
 
 TEST_CASE("Initialization") {
     splay_tree_implementation test_splay_tree;
@@ -28,14 +29,10 @@ TEST_CASE("Remove") {
 }
 
 TEST_CASE("Mycase") {
-    splay_tree_implementation test_splay_tree;
-    for(int i = 0;i<5;i++)
-    {
-    	test_splay_tree.insert(i+10);
-    }    
-    CHECK(test_splay_tree.get_num_nodes() == 5);
+    splay_tree_implementation test_splay_tree;  
+    CHECK(test_splay_tree.get_num_nodes() == 0);
     test_splay_tree.insert(0);
-    CHECK(test_splay_tree.get_num_nodes() == 6);
+    CHECK(test_splay_tree.get_num_nodes() == 1);
     test_splay_tree.remove(0);
-    CHECK(test_splay_tree.get_num_nodes() == 5);
+    CHECK(test_splay_tree.get_num_nodes() == 0);
 }

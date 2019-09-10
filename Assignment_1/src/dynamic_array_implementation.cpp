@@ -1,4 +1,5 @@
 #include "../include/dynamic_array.hpp"
+#include<cmath>
 
 using namespace std;
 
@@ -28,8 +29,8 @@ dynamic_array_implementation::dynamic_array_implementation()
 {
     size = 0;
     capacity = 0;
-    increase_factor = 1.5;
-    decrease_factor = 0.333;
+    increase_factor = 2;
+    decrease_factor = 0.25;
 }
 int dynamic_array_implementation::get_size()
 {
@@ -53,23 +54,25 @@ void dynamic_array_implementation::set_load_factor_reduction(double decrease_fac
 
 void dynamic_array_implementation::append(int element)
 {
-	if(capacity == size)
+	if(capacity == 0)
 	{
-		if(capacity == 0)
-		{
-			capacity = 1;
-			arr = (int*)malloc(sizeof(int)*capacity);
-		}
-		else
-		{
-			capacity = capacity * increase_factor;
+		capacity = 1;
+		arr = (int*)malloc(sizeof(int)*capacity);
+	}
+	if(capacity <= size)
+	{		
+		capacity =(int) ceil(capacity * increase_factor);
 			
-		}
 		int *temp = (int*)malloc(sizeof(int)*capacity);
+		if(temp == NULL)
+		{
+			throw runtime_error("Allocation Failed");
+		}
 		for(int i=0; i<size; i++)
 		{
 			temp[i] = arr[i];
 		}
+		free(arr);
 		arr = temp;	
 	}
 	arr[size++] = element;
@@ -78,7 +81,7 @@ void dynamic_array_implementation::append(int element)
 
 void dynamic_array_implementation::pop()
 {
-	if(capacity*decrease_factor == size)
+	if(capacity*decrease_factor >= size)
 	{
 		if(size == 0 )
 		{
@@ -86,13 +89,14 @@ void dynamic_array_implementation::pop()
 		}
 		else
 		{
-			capacity = capacity * (increase_factor * decrease_factor);
+			capacity =(int) ceil(capacity * (increase_factor * decrease_factor));
 		}
 		int *temp = (int*)malloc(sizeof(int)*capacity);
 		for(int i=0; i<size; i++)
 		{
 			temp[i] = arr[i];
 		}
+		free(arr);
 		arr = temp;
 	}
 	size--;
