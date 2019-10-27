@@ -12,7 +12,7 @@ int main()
 {
     double range = pow(10, -9);
     survival_of_the_fittest_implementation obj1;
-    vector<double> tmp = obj1.solve(1, 1, 2);
+    vector<double> tmp = obj1.solve(100,100, 49);
     cout << tmp[0] << " " << tmp[1] << " " << tmp[2] << "\n";
     //Sets precision to show specified number of digits. Refer, 
     https://stackoverflow.com/questions/554063/how-do-i-print-a-double-value-with-full-precision-using-cout
