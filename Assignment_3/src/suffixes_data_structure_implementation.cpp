@@ -31,7 +31,7 @@ public:
 
 suffixes_data_structure_implementation::suffixes_data_structure_implementation()
 {
-    root = create_node(0, 0, "");
+    root = create_node(0, 0, " ");
 }
 
 void suffixes_data_structure_implementation::build(vector<string> input)
@@ -72,7 +72,7 @@ node *suffixes_data_structure_implementation::create_node(int pos, int docNo, st
 {
     node *temp = (node *)malloc(sizeof(node));
     temp->indexes.push_back(make_pair(docNo, pos));
-    temp->edge.assign(str, pos, string::npos);
+    temp->edge = str.substr(pos);
     temp->nodes[36] = (node *)malloc(sizeof(node));
     temp->nodes[36]->indexes.push_back(make_pair(docNo, pos));
     return temp;
@@ -82,7 +82,7 @@ node *suffixes_data_structure_implementation::create_node(int pos, string str, v
 {
     node *temp = (node *)malloc(sizeof(node));
     temp->indexes = index;
-    temp->edge.assign(str, pos, string::npos);
+    temp->edge = str.substr(pos);
     temp->nodes[36] = (node *)malloc(sizeof(node));
     temp->nodes[36]->indexes = index;
     return temp;
@@ -92,7 +92,7 @@ node *suffixes_data_structure_implementation::create_node(int ind, int pos, int 
 {
     node *temp = (node *)malloc(sizeof(node));
     temp->indexes.push_back(make_pair(docNo, ind));
-    temp->edge.assign(str, pos, string::npos);
+    temp->edge = str.substr(pos);
     temp->nodes[36] = (node *)malloc(sizeof(node));
     temp->nodes[36]->indexes.push_back(make_pair(docNo, ind));
     return temp;
@@ -112,14 +112,15 @@ void suffixes_data_structure_implementation::create_internal_node(node *node, st
     }
     else if (ind + i == str.length() && i < str1.length())
     {
-        node->edge.assign(str1, 0, i);
+        //node->edge.assign(str1, 0, i);
+        node->edge = str1.substr(0,i);
         node->indexes.clear();
         node->indexes.push_back(make_pair(docNo, ind));
         node->nodes[str[i]] = create_node(i, str1, node->indexes);
     }
     else if (i < str1.length() && ind + i < str.length() && str[i] != str[ind + i])
     {
-        node->edge.assign(str1, 0, i);
+        node->edge = str1.substr(0,i);
         node->nodes[str1[i]] = create_node(i, str1, node->indexes);
         node->nodes[str[ind + i]] = create_node(ind, ind + i, docNo, str);
     }
@@ -158,7 +159,8 @@ search_results suffixes_data_structure_implementation::search_internal(string st
     }
     if (i == min && sl == ql) //full match
     {
-        results.matched_string.assign(str, ind, string::npos);
+        //results.matched_string.assign(str, ind, string::npos);
+        results.matched_string = str.substr(ind);
         results.indices = node->nodes[36]->indexes;
         return results;
     }
@@ -168,13 +170,15 @@ search_results suffixes_data_structure_implementation::search_internal(string st
         {
             search_results temp = search_internal(str, i, node->nodes[str[i]]);
             results.indices = temp.indices;
-            results.matched_string.assign(str, ind, ind + i);
+            //results.matched_string.assign(str, ind, ind + i);
+            results.matched_string = str.substr(ind,ind+i);
             results.matched_string.append(temp.matched_string);
             return results;
         }
     }
 
-    results.matched_string.assign(str, ind, ind + i);
+    //results.matched_string.assign(str, ind, ind + i);
+    results.matched_string = str.substr(ind,ind+i);
     results.indices.push_back(node->indexes[0]);
     return results;
 }
