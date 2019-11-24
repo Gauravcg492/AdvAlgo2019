@@ -31,7 +31,8 @@ public:
 
 suffixes_data_structure_implementation::suffixes_data_structure_implementation()
 {
-    root = create_node(0, 0, " ");
+    string temp = "";
+    root = create_node(0, 0,temp);
 }
 
 void suffixes_data_structure_implementation::build(vector<string> input)
@@ -72,7 +73,13 @@ node *suffixes_data_structure_implementation::create_node(int pos, int docNo, st
 {
     node *temp = (node *)malloc(sizeof(node));
     temp->indexes.push_back(make_pair(docNo, pos));
-    temp->edge = str.substr(pos);
+    if(str.length() == 0)
+    {
+        temp->edge = str;
+    }
+    else{
+        temp->edge = str.substr(pos);
+    }
     temp->nodes[36] = (node *)malloc(sizeof(node));
     temp->nodes[36]->indexes.push_back(make_pair(docNo, pos));
     return temp;
@@ -143,6 +150,7 @@ search_results suffixes_data_structure_implementation::search(string query)
         results.matched_string = "";
         results.indices.clear();
     }
+    return results;
 }
 
 search_results suffixes_data_structure_implementation::search_internal(string str, int ind, node *node)
